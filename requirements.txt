@@ -64,7 +64,7 @@ tensorflow-intel
 tensorflow-io-gcs-filesystem==0.31.0
 termcolor==2.4.0
 tqdm==4.66.2
-typing-extensions==4.11.0
+typing-extensions
 urllib3==2.2.1
 werkzeug==3.0.2
 wrapt==1.16.0
