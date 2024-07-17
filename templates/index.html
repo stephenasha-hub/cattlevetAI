@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/fonts.css') }}">
+    <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="mt-5">
+            <div class=" rowd-flex justify-content-center">
+                <div class="col-12">                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="text-center text-success">
+                                Cattle<span class="text-danger">Vet</span> AI Diagnosis
+                            </h2>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 col-sm-12 p-2">
+                                    <input type="file" id="upload_image" accept="image/*">
+                                    <br>
+                                    <br>
+                                    <br>
+                                        <img src="" id="image_preview" alt="" class="img-fluid img-thumbnail w-50">
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <button id="processButton" class="btn btn-success">Diagnose</button>
+                                    <div class="loader"></div>
+                                </div>
+                                <div class="card col-md-8 col-sm-12 p-5">
+                                    <h2 id="openai"></h2>
+                                    <p id="result" class="text-dark" style="line-height: 40px;"></p>
+                                    <h3 class="text-danger" id="error"></h3>
+                                </div>
+                            </div>
+                            <input type="text" hidden id="audiosrccont">
+                        </div>
+                        <div class="card-footer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="audioPlayer" hidden controls></audio>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+    <script>
+        function typeWriter(text, i, speed) {
+            if (i < text.length) {
+                $("#result").html($("#result").html() + text.charAt(i));
+                i++;
+                setTimeout(function() {
+                    typeWriter(text, i, speed);
+                }, speed);
+            }
+        }
+
+        $(document).ready(function() {
+            $("#processButton").click(function() {
+                // Disable the button and show loading animation
+                $(this).prop('disabled', true).find('.loader').show();
+                $("#processButton").text("Diagnosing");
+
+                var formData = new FormData();
+                formData.append('image', $('#upload_image')[0].files[0]);
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/process_image',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    beforeSend: function() {
+                        $("#result").text("");
+                    },
+                    success: function(response) {
+                        $("#processButton").prop('disabled', false).find('.loader').hide();
+
+                        $("#openai").text(response.disease);
+                        $("#result").html(response.text);
+
+                        //typeWriter(response.text, 5, 1)
+                        //var textResponse = response;
+                        console.log(response)
+                        $(this).prop('disabled', false).find('.loader').hide();
+                        $("#processButton").text("Diagnose");
+        
+                    },
+                    error: function(xhr, status, error) {
+                        $("#processButton").prop('disabled', false).find('.loader').hide();
+                        $("#processButton").text("Diagnose");
+
+                        alert("Error: " + xhr.responseText);
+                        $("#error").html("Error: " + xhr.responseText);
+                    }
+                });
+            });
+
+
+    $('#image_preview').attr('hidden', true);
+    $('#upload_image').change(function(event){
+        var files = event.target.files;
+        var done = function (url) {
+            $('#image_preview').attr('src', url); 
+            $('#image_preview').attr('hidden', false);
+            console.log(url)
+        };
+    
+
+        if (files && files.length > 0)
+        {
+                reader = new FileReader();
+                reader.onload = function (event) {
+                        done(reader.result);
+                        console.log(reader.result)
+                };
+                console.log(reader.readAsDataURL(files[0]));
+
+        }
+    });
+        });
+    </script>
+</body>
+
+</html>

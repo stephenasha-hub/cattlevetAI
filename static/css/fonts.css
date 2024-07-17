@@ -1,0 +1,34 @@
+p,label, h2, h1, h3, h4, h5, h6, a, input, button, td, th{
+    font-family:poppins;
+}
+
+  .running-cow {
+    display: inline-block;
+    width: 40%;
+    height: 40vh;
+    background: url('https://tenor.com/view/running-cow-animated-gif-17345106');
+    background-size: cover;
+    animation: run 0.8s infinite;
+}
+
+@keyframes run {
+    0% { background-position: 0 0; }
+    100% { background-position: -60px 0; }
+}
+
+.loader {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 2s linear infinite;
+    margin: 0 auto;
+    margin-top: 20px;
+    display: none;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
