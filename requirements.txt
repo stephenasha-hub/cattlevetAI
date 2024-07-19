@@ -38,7 +38,6 @@ MarkupSafe==2.1.5
 multidict==6.0.5
 numpy==1.24.3
 oauthlib==3.2.2
-openai
 opt-einsum==3.3.0
 packaging==24.0
 pillow==10.3.0
