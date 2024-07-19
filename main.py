@@ -3,13 +3,13 @@ import os
 import uuid
 
 import numpy as np
-import openai
+#import openai
 import pyttsx3
 import tensorflow as tf
 from PIL import Image
 from flask import Flask, request, render_template, jsonify
 
-from api_key import OPENAI_API_KEY
+#from api_key import OPENAI_API_KEY
 
 app = Flask(__name__)
 
@@ -23,9 +23,9 @@ model = tf.keras.models.load_model(model_path)
 
 class_labels = class_names
 
-audio_dir = 'static/audio_files/'
+#audio_dir = 'static/audio_files/'
 
-openai.api_key = OPENAI_API_KEY
+#openai.api_key = OPENAI_API_KEY
 
 
 
